@@ -1,0 +1,8 @@
+python createSimulationData.py --DataName TopBox           --NumTrainingSamples 1000 --NumTestingSamples 300 --NumTimeSteps 100 --NumFeatures 100 --ImpTimeSteps  30 --ImpFeatures  80 --StartImpTimeSteps 0 --EndImpTimeSteps 30 --StartImpFeatures 10 --EndImpFeatures  90 --multipleBox False
+python createSimulationData.py --DataName BottomBox        --NumTrainingSamples 1000 --NumTestingSamples 300 --NumTimeSteps 100 --NumFeatures 100 --ImpTimeSteps  30 --ImpFeatures  80 --StartImpTimeSteps 70 --EndImpTimeSteps 100 --StartImpFeatures 10 --EndImpFeatures  90 --multipleBox False
+python createSimulationData.py --DataName MiddleBox        --NumTrainingSamples 1000 --NumTestingSamples 300 --NumTimeSteps 100 --NumFeatures 100 --ImpTimeSteps  60 --ImpFeatures  60 --StartImpTimeSteps 20 --EndImpTimeSteps 80 --StartImpFeatures 20 --EndImpFeatures  80 --multipleBox False
+python createSimulationData.py --DataName ThreeUpperBoxes  --NumTrainingSamples 1000 --NumTestingSamples 300 --NumTimeSteps 100 --NumFeatures 100 --ImpTimeSteps  [40,40,40] --ImpFeatures  [30,30,30] --StartImpTimeSteps [0,0,0] --EndImpTimeSteps [40,40,40] --StartImpFeatures [0,35,70] --EndImpFeatures  [30,65,100] --multipleBox True
+python createSimulationData.py --DataName ThreeMiddleBoxes --NumTrainingSamples 1000 --NumTestingSamples 300 --NumTimeSteps 100 --NumFeatures 100 --ImpTimeSteps  [40,40,40] --ImpFeatures  [30,30,30] --StartImpTimeSteps [25,25,25] --EndImpTimeSteps [65,65,65] --StartImpFeatures [0,35,70] --EndImpFeatures  [30,65,100] --multipleBox True
+
+
+
