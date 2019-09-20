@@ -6,15 +6,10 @@ import argparse
 import Helper
 import torch.utils.data as data_utils
 import numpy as np
-import torch.nn.functional as F
 from sklearn.preprocessing import StandardScaler
-from Helper import checkAccuracyOnTestLstm , checkAccuracyOnTestLstmCell ,checkAccuracyOnTestFF,checkAccuracyOnTestAttentionLstm
+from Helper import checkAccuracyOnTestLstm 
 from net import *
 from numpy import array
-from numpy.linalg import norm
-# from heatmap import *
-import random
-import os
 
 
 # Device configuration
@@ -83,8 +78,72 @@ def main(args):
 
 
 
-    ########################################### InputCellAttention LSTM ##########################################
-    print("Start Training" , modelName ,'InputCellAttention')
+    # ########################################### LSTM ##########################################
+    # print("Start Training" , modelName ,'LSTM')
+
+
+    # netUniLstmCellAtten = CustomRNN(args.input_size, args.hidden_size1, args.num_layers, args.num_classes,args.rnndropout,args.LSTMdropout ,networkType="LSTM" ).to(device)
+    # netUniLstmCellAtten.double()
+    # optimizerTimeAtten = torch.optim.Adam(netUniLstmCellAtten.parameters(), lr=args.learning_rate)
+
+
+    # saveModelName="../Models/"+modelName+"_LSTM_L"+ str(args.num_layers) +"_"+str(args.hidden_size1)+"_Scaled_"+ str(args.learning_rate)+"_DrpRNN"+str(args.rnndropout)+"_DrpLSTM"+str(args.LSTMdropout)+'_'+str(args.num_classes)+"_r"+str(args.attention_hops)+"_da"+str(args.d_a)
+    # saveModelBestName =saveModelName +"_BEST.pkl"
+    # saveModelLastName=saveModelName+"_LAST.pkl"
+     
+    
+
+    # # Train the model
+    # total_step = len(train_loaderRNN)
+    # Train_acc_flag=False
+    # Train_Acc=0
+    # Test_Acc=0
+    # BestAcc=0
+    # BestEpochs = 0
+    # for epoch in range(args.num_epochs):
+    #     for i, (samples, labels,seqLength) in enumerate(train_loaderRNN):
+    #         netUniLstmCellAtten.train()
+    #         samples = samples.reshape(-1, args.sequence_length, args.input_size).to(device)
+    #         samples = Variable(samples)
+    #         labels = labels.to(device)
+    #         labels = Variable(labels).long()
+
+    #         outputs = netUniLstmCellAtten(samples,seqLength)
+    #         loss = criterion(outputs, labels)
+            
+    #         optimizerTimeAtten.zero_grad()
+    #         loss.backward()
+    #         optimizerTimeAtten.step()
+
+    #         if (i+1) % 10 == 0:
+    #             Test_Acc = checkAccuracyOnTestLstm(test_loaderRNN, netUniLstmCellAtten,args)
+    #             Train_Acc = checkAccuracyOnTestLstm(train_loaderRNN, netUniLstmCellAtten,args)
+    #             if(Test_Acc>BestAcc):
+    #                 BestAcc=Test_Acc
+    #                 BestEpochs = epoch+1
+    #                 torch.save(netUniLstmCellAtten, saveModelBestName)
+    #             print ('LSTM for {}-->Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Train Accuracy {:.5f}, Test Accuracy {:.5f},BestEpochs {},BestAcc {:.5f}' 
+    #                    .format(args.DataName, epoch+1, args.num_epochs, i+1, total_step, loss.item(),Train_Acc, Test_Acc,BestEpochs , BestAcc))
+
+
+    #         if(epoch+1)%10==0:
+    #             torch.save(netUniLstmCellAtten, saveModelLastName)
+    #         if(Train_Acc==100):
+    #             torch.save(netUniLstmCellAtten,saveModelLastName)
+    #             Train_acc_flag=True
+    #             break
+    #     if(Train_acc_flag):
+    #         break
+
+    # print(">>>>>>>>>>>>> 1 layer LSTM  >>>>>>>>>>>>>>>>>>>>>>")
+
+    # Train_Acc =checkAccuracyOnTestLstm(train_loaderRNN , netUniLstmCellAtten, args,Flag=True)
+    # print('BestEpochs {},BestAcc {:.4f}, LastTrainAcc {:.4f},'.format(BestEpochs , BestAcc , Train_Acc))
+
+
+
+    ########################################### InputCellAttention ##########################################
+    print("Start Training" , modelName ,'Input Cell Attention')
 
 
     netUniLstmCellAtten = CustomRNN(args.input_size, args.hidden_size1, args.num_layers, args.num_classes,args.rnndropout,args.LSTMdropout,d_a=args.d_a , r=args.attention_hops ,networkType="InputCellAttention" ).to(device)
@@ -92,7 +151,7 @@ def main(args):
     optimizerTimeAtten = torch.optim.Adam(netUniLstmCellAtten.parameters(), lr=args.learning_rate)
 
 
-    saveModelName="../Models/"+modelName+"_InputCellAttentionMatrix_UniLSTM_L"+ str(args.num_layers) +"_"+str(args.hidden_size1)+"_Scaled_"+ str(args.learning_rate)+"_DrpRNN"+str(args.rnndropout)+"_DrpLSTM"+str(args.LSTMdropout)+'_'+str(args.num_classes)+"_r"+str(args.attention_hops)+"_da"+str(args.d_a)
+    saveModelName="../Models/"+modelName+"_InputCellAttention_L"+ str(args.num_layers) +"_"+str(args.hidden_size1)+"_Scaled_"+ str(args.learning_rate)+"_DrpRNN"+str(args.rnndropout)+"_DrpLSTM"+str(args.LSTMdropout)+'_'+str(args.num_classes)+"_r"+str(args.attention_hops)+"_da"+str(args.d_a)
     saveModelBestName =saveModelName +"_BEST.pkl"
     saveModelLastName=saveModelName+"_LAST.pkl"
      
@@ -127,7 +186,7 @@ def main(args):
                     BestAcc=Test_Acc
                     BestEpochs = epoch+1
                     torch.save(netUniLstmCellAtten, saveModelBestName)
-                print ('LSTM InputCellAttention for {}-->Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Train Accuracy {:.5f}, Test Accuracy {:.5f},BestEpochs {},BestAcc {:.5f}' 
+                print ('Input Cell Attention for LSTM {}-->Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Train Accuracy {:.5f}, Test Accuracy {:.5f},BestEpochs {},BestAcc {:.5f}' 
                        .format(args.DataName, epoch+1, args.num_epochs, i+1, total_step, loss.item(),Train_Acc, Test_Acc,BestEpochs , BestAcc))
 
 
@@ -140,7 +199,7 @@ def main(args):
         if(Train_acc_flag):
             break
 
-    print(">>>>>>>>>>>>> 1 layer InputCellAttention LSTM >>>>>>>>>>>>>>>>>>>>>>")
+    print(">>>>>>>>>>>>> 1 layer Input Cell Attention  >>>>>>>>>>>>>>>>>>>>>>")
 
     Train_Acc =checkAccuracyOnTestLstm(train_loaderRNN , netUniLstmCellAtten, args,Flag=True)
     print('BestEpochs {},BestAcc {:.4f}, LastTrainAcc {:.4f},'.format(BestEpochs , BestAcc , Train_Acc))

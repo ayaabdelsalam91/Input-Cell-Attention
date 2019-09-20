@@ -75,27 +75,6 @@ def get_immediate_subdirectories(a_dir):
     return [name for name in os.listdir(a_dir)
             if os.path.isdir(os.path.join(a_dir, name))]
 
-def hiddenStateMaxPooling(input,batch_first =True):
-    if(batch_first):
-        maxPooling = torch.max(input, dim=1)[0]
-    else:
-        maxPooling = torch.max(input, dim=0)[0]
-    return maxPooling
-
-def hiddenStateMinPooling(input,batch_first =True):
-    if(batch_first):
-        minPooling = torch.min(input, dim=1)[0]
-    else:
-        minPooling = torch.min(input, dim=0)[0]
-    return minPooling
-
-def hiddenStateMeanPooling(input,batch_first =True):
-    if(batch_first):
-        meanPooling = torch.squeeze(F.adaptive_avg_pool2d(input, (1, input.size(-1))))
-    if(input.size(0)==1):
-        meanPooling =torch.unsqueeze(meanPooling,0)
-    return meanPooling
-
 
 
 def save_intoCSV(data,file,Flip=False,col=None,index=False):
@@ -182,135 +161,11 @@ def checkAccuracyOnTestLstm(test_loader , net ,args,Flag=False , returnValue=Fal
             labels_.append(labels)
        
         if(Flag):
-            #print('Accuracy of the network on the' ,TestingLabel.shape[0], 'samples: %d %%' % (100 * correct / total))
             predicted_ = list(itertools.chain.from_iterable(predicted_))
             labels_ = list(itertools.chain.from_iterable(labels_))
-
-            # newpredicted_ = []
-            # for value in predicted_:
-            #     newpredicted_.append(value.item())
-
-            # newlabels_ = []
-            # for value in labels_:
-            #     newlabels_.append(value.item())
-            # print(confusion_matrix(newlabels_, newpredicted_))
-            # print(confusion_matrix(labels_, predicted_))
     if(returnValue):
         return 100.0 * float(correct) / total , predicted_ , labels_
     else:
         return 100.0 * float(correct) / total 
 
 
-def checkAccuracyOnTestAttentionLstm(test_loader , net ,args,Flag=False , returnValue=False):
-    predicted_=[]
-    labels_=[]
-
-    correct = 0
-    total = 0
-    net.eval()
-
-    with torch.no_grad():
-        correct = 0
-        total = 0
-        for  (samples, labels,seqLength)  in test_loader:
-            samples = samples.reshape(-1, args.sequence_length, args.input_size).to(device)
-            samples = Variable(samples)
-            labels = labels.to(device)
-            labels = Variable(labels).long()
-            outputs,attention = net(samples )
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-            predicted_.append(predicted)
-            labels_.append(labels)
-       
-        if(Flag):
-            #print('Accuracy of the network on the' ,TestingLabel.shape[0], 'samples: %d %%' % (100 * correct / total))
-            predicted_ = list(itertools.chain.from_iterable(predicted_))
-            labels_ = list(itertools.chain.from_iterable(labels_))
-
-            # newpredicted_ = []
-            # for value in predicted_:
-            #     newpredicted_.append(value.item())
-
-            # newlabels_ = []
-            # for value in labels_:
-            #     newlabels_.append(value.item())
-            # print(confusion_matrix(newlabels_, newpredicted_))
-            # print(confusion_matrix(labels_, predicted_))
-    if(returnValue):
-        return 100.0 * float(correct) / total , predicted_ , labels_
-    else:
-        return 100.0 * float(correct) / total 
-
-def checkAccuracyOnTestLstmCell(test_loader , net ,args,Flag=False,returnValue=False):
-    predicted_=[]
-    labels_=[]
-    correct = 0
-    total = 0
-    net.eval()
-
-    with torch.no_grad():
-        correct = 0
-        total = 0
-        for  (samples, labels,seqLength)  in test_loader:
-            samples = samples.reshape( args.sequence_length,-1,args.input_size).to(device)
-            samples = Variable(samples)
-            labels = labels.to(device)
-            labels = Variable(labels).long()
-            outputs = net(samples , seqLength)
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-            predicted_.append(predicted)
-            labels_.append(labels)
-        if(Flag):
-            #print('Accuracy of the network on the' ,TestingLabel.shape[0], 'samples: %d %%' % (100 * correct / total))
-            predicted_ = list(itertools.chain.from_iterable(predicted_))
-            labels_ = list(itertools.chain.from_iterable(labels_))
-
-            # newpredicted_ = []
-            # for value in predicted_:
-            #     newpredicted_.append(value.item())
-
-            # newlabels_ = []
-            # for value in labels_:
-            #     newlabels_.append(value.item())
-            # print(confusion_matrix(newlabels_, newpredicted_))
-            # print(confusion_matrix(labels_, predicted_))
-    if(returnValue):
-        return 100.0 * float(correct) / total , predicted_ , labels_
-    else:
-        return 100.0 * float(correct) / total 
-
-def checkAccuracyOnTestFF(test_loader , net ,args,Flag=False,returnValue=False):
-    predicted_=[]
-    labels_=[]
-
-    correct = 0
-    total = 0
-    net.eval()
-
-    with torch.no_grad():
-        correct = 0
-        total = 0
-        for  (samples, labels)  in test_loader:
-            samples =  Variable(samples.view(-1, args.input_size)) .to(device)
-            labels = labels.to(device)
-            labels = Variable(labels).long()
-            outputs = net(samples )
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-            predicted_.append(predicted)
-            labels_.append(labels)
-       
-        if(Flag):
-            #print('Accuracy of the network on the' ,TestingLabel.shape[0], 'samples: %d %%' % (100 * correct / total))
-            predicted_ = list(itertools.chain.from_iterable(predicted_))
-            labels_ = list(itertools.chain.from_iterable(labels_))
-            # print(confusion_matrix(labels_, predicted_))
-    if(returnValue):
-        return 100.0 * float(correct) / total , predicted_ , labels_
-    else:
-        return 100.0 * float(correct) / total 

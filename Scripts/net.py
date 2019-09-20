@@ -43,7 +43,7 @@ class CustomRNN(nn.Module):
             elif(networkType =="RNN"): 
                 self.rnn = nn.RNN(input_size, hidden_size1,self.num_layers,  batch_first=True)
             elif(networkType=="InputCellAttention"):
-                self.rnn =LSTMWithInputCellAttention(input_size, hidden_size1,r,  d_a)
+                self.rnn =LSTMWithInputCellAttention(input_size, hidden_size1,r,d_a)
         else:
             self.rnn = nn.LSTM(input_size,hidden_size1,self.num_layers,batch_first=True)
             self.networkType="LSTM"

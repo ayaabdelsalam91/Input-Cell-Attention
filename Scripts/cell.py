@@ -4,8 +4,8 @@ import torch.nn as nn
 from torch.autograd import Variable
 from torch.nn import Parameter
 import numpy as np
-
-
+from typing import *
+import torch.nn.functional as F
 
 
 
@@ -61,17 +61,6 @@ class LSTMWithInputCellAttention(nn.Module):
         return matrixM
 
     def softmax(self,input, axis=1):
-        """
-        Softmax applied to axis=n
- 
-        Args:
-           input: {Tensor,Variable} input on which softmax is to be applied
-           axis : {int} axis on which softmax is to be applied
- 
-        Returns:
-            softmaxed tensors
- 
-        """
         input_size = input.size()
         trans_input = input.transpose(axis, len(input_size)-1)
         trans_size = trans_input.size()
@@ -85,6 +74,7 @@ class LSTMWithInputCellAttention(nn.Module):
     def forward(self, x: torch.Tensor, 
                 init_states: Optional[Tuple[torch.Tensor]]=None
                ) -> Tuple[torch.Tensor, Tuple[torch.Tensor, torch.Tensor]]:
+    
         """Assumes x is of shape (batch, sequence, feature)"""
         bs, seq_sz, _ = x.size()
         hidden_seq = []
