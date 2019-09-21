@@ -73,8 +73,6 @@ def main(args):
 
 
     TrainingSeqLength= TrainingLabel[:,1].astype(int)
-    TrainingType=TrainingLabel[:,-1]
-    Types = np.unique(TrainingType)
     TrainingLabel= TrainingLabel[:,0]
     TrainingLabel=TrainingLabel.reshape(TrainingLabel.shape[0],)
     TrainingLabel = Helper.reOrderLabels(TrainingLabel.tolist())
@@ -86,8 +84,6 @@ def main(args):
     TestingLabel = Helper.load_CSV(args.data_dir+"SimulatedTestingLabels"+args.DataName+"_F"+str(args.input_size)+"_TS_"+str(args.sequence_length)+"_IMPSTART_"+str(args.importance)+".csv")
     
     TestingSeqLength= TestingLabel[:,1].astype(int)
-    TestingType=TestingLabel[:,-1]
-    Types = np.unique(TestingType)
     TestingLabel= TestingLabel[:,0]
     TestingLabel=TestingLabel.reshape(TestingLabel.shape[0],)
     TestingLabel = Helper.reOrderLabels(TestingLabel.tolist())
