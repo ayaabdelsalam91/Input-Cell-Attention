@@ -5,7 +5,6 @@ import Helper
 import math
 from sklearn.metrics import jaccard_similarity_score
 from sklearn.preprocessing import StandardScaler
-from heatmap import *
 from  sklearn.preprocessing import minmax_scale
 def createReferenceSample(sampleSize,TargetYStart,TargetYEnd,TargetXStart,TargetXEnd , multipleBox=False):
     DataSet = np.zeros(( sampleSize[0],sampleSize[1]))

@@ -120,7 +120,7 @@ def main(args):
     models=[
             "../Models/"+modelName+"_LSTM_L"+ str(args.num_layers) +"_"+str(args.hidden_size1)+"_Scaled_"+ str(args.learning_rate)+"_DrpRNN"+str(args.rnndropout)+"_DrpLSTM"+str(args.LSTMdropout)+'_'+str(args.num_classes)+"_r"+str(args.attention_hops)+"_da"+str(args.d_a),
             "../Models/"+modelName+"_InputCellAttention_L"+ str(args.num_layers) +"_"+str(args.hidden_size1)+"_Scaled_"+ str(args.learning_rate)+"_DrpRNN"+str(args.rnndropout)+"_DrpLSTM"+str(args.LSTMdropout)+'_'+str(args.num_classes)+"_r"+str(args.attention_hops)+"_da"+str(args.d_a),
-                ]
+            ]
 
 
     TestingLabel = Variable(torch.from_numpy(TestingLabel).to(device))
@@ -167,11 +167,11 @@ def parse_arguments(argv):
     parser = argparse.ArgumentParser()
     parser.add_argument('--num_classes', type=int, default=2)
     parser.add_argument('--sequence_length', type=int, default=100)
+    parser.add_argument('--input_size', type=int,default=100)
     parser.add_argument('--importance', type=str, default=0)
     parser.add_argument('--DataName', type=str ,default="TopBox")
     parser.add_argument('--attention_hops', type=int, default=20)
     parser.add_argument('--d_a', type=int, default=50)
-    parser.add_argument('--input_size', type=int,default=100)
     parser.add_argument('--hidden_size1', type=int,default=5)
     parser.add_argument('--num_layers', type=int,default=1)
     parser.add_argument('--batch_size', type=int,default=150)

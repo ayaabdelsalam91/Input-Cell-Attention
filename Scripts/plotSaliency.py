@@ -2,31 +2,14 @@
 Created on Thu Oct 26 11:19:58 2017
 @author: Utku Ozbulak - github.com/utkuozbulak
 """
-import torch
-from net import *
-import Helper
-import argparse
-import random
-import sys
-import torch
-import torch.nn as nn
-from torch.autograd import Variable
-import argparse
-import Helper
-import torch.utils.data as data_utils
-import numpy as np
-import torch.nn.functional as F
-from sklearn.preprocessing import StandardScaler
-from net import *
 
-import random
-from scipy.spatial import distance
-np.set_printoptions(threshold=sys.maxsize)
-from scipy.spatial.distance  import jaccard
-from accuracyMethods import *
-import os
+import Helper
+import argparse
+import sys
+import numpy as np
+import matplotlib.pylab as plt
 import matplotlib.colors as colors
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 Loc_Graph = '../Graphs/'
 Results='../Results/'
 
@@ -37,8 +20,6 @@ class MidpointNormalize(colors.Normalize):
         colors.Normalize.__init__(self, vmin, vmax, clip)
 
     def __call__(self, value, clip=None):
-        # I'm ignoring masked values and all kinds of edge cases to make a
-        # simple example...
         x, y = [self.vmin, self.midpoint, self.vmax], [0, 0.5, 1]
         return np.ma.masked_array(np.interp(value, x, y))
 
@@ -70,9 +51,6 @@ def plotHeatMapExampleWise(input,title, saveLocation,greyScale=False,flip=False,
         plt.show()
 
 
-
-
-
 def main(args):
 
     TestingLabel = Helper.load_CSV(args.data_dir+"SimulatedTestingLabels"+args.DataName+"_F"+str(args.input_size)+"_TS_"+str(args.sequence_length)+"_IMPSTART_"+str(args.importance)+".csv")
@@ -98,7 +76,6 @@ def main(args):
                     negGrad.append(saliency[i])
                 else:
                     posGrad.append(saliency[i])
-
 
             meanPosGrad = np.mean(np.array(posGrad), axis=0)
             meanNegGrad = np.mean(np.array(negGrad), axis=0)

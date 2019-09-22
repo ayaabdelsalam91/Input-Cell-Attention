@@ -178,8 +178,8 @@ def main(args):
             optimizerTimeAtten.zero_grad()
             loss.backward()
             optimizerTimeAtten.step()
-
-            if (i+1) % 10 == 0:
+            print(i)
+            if (i+1) % 3 == 0:
                 Test_Acc = checkAccuracyOnTestLstm(test_loaderRNN, netUniLstmCellAtten,args)
                 Train_Acc = checkAccuracyOnTestLstm(train_loaderRNN, netUniLstmCellAtten,args)
                 if(Test_Acc>BestAcc):

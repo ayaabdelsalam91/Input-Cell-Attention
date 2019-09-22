@@ -22,6 +22,30 @@ class Dim(IntEnum):
  
 
 
+import torch
+import sys
+import torch.nn as nn
+from torch.autograd import Variable
+from torch.nn import Parameter
+import numpy as np
+from typing import *
+import torch.nn.functional as F
+
+
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+batch_first =True
+
+
+
+from enum import IntEnum
+class Dim(IntEnum):
+    batch = 0
+    seq = 1
+    feature = 2
+ 
+
+
 class LSTMWithInputCellAttention(nn.Module):
 
     def __init__(self, input_sz: int, hidden_sz: int,r:int,d_a:int):
@@ -30,7 +54,7 @@ class LSTMWithInputCellAttention(nn.Module):
         self.input_sz = input_sz
         self.hidden_size = hidden_sz
         self.weight_ih = Parameter(torch.Tensor(input_sz, hidden_sz * 4))
-        self.weight_iBarh = Parameter(torch.Tensor(r* input_sz,  hidden_sz* 4))
+        self.weight_iBarh = Parameter(torch.Tensor(input_sz,  hidden_sz* 4))
         self.weight_hh = Parameter(torch.Tensor(hidden_sz, hidden_sz * 4))
         self.bias = Parameter(torch.Tensor(hidden_sz * 4))
         self.r=r
@@ -53,11 +77,13 @@ class LSTMWithInputCellAttention(nn.Module):
 
         x= self.linear_first(pastTimeSteps)
 
-        x = F.tanh(x)
+        x = torch.tanh(x)
         x = self.linear_second(x) 
         x = self.softmax(x,1)
         attention = x.transpose(1,2) 
         matrixM = attention@pastTimeSteps 
+        matrixM = torch.sum(matrixM,1)/self.r
+
         return matrixM
 
     def softmax(self,input, axis=1):
@@ -74,7 +100,6 @@ class LSTMWithInputCellAttention(nn.Module):
     def forward(self, x: torch.Tensor, 
                 init_states: Optional[Tuple[torch.Tensor]]=None
                ) -> Tuple[torch.Tensor, Tuple[torch.Tensor, torch.Tensor]]:
-    
         """Assumes x is of shape (batch, sequence, feature)"""
         bs, seq_sz, _ = x.size()
         hidden_seq = []
@@ -88,7 +113,7 @@ class LSTMWithInputCellAttention(nn.Module):
         HS = self.hidden_size
         batchSize=x[:, 0, :].size()[0]
 
-        M=torch.zeros(batchSize , self.r , self.input_sz).double()
+        M=torch.zeros(batchSize , self.input_sz).double()
 
         for t in range(seq_sz):
             x_t = x[:, t, :]
@@ -101,9 +126,8 @@ class LSTMWithInputCellAttention(nn.Module):
 
                 M = self.getMatrixM(H)
 
-            xBar=M.view(batchSize,self.r*self.input_sz)
-            xBar = F.normalize(xBar, p=2, dim=1)
-            gates = xBar @ self.weight_iBarh + h_t @ self.weight_hh + self.bias
+
+            gates = M @ self.weight_iBarh + h_t @ self.weight_hh + self.bias
 
             i_t, f_t, g_t, o_t = (
                 torch.sigmoid(gates[:,:, :HS]), # input
@@ -117,7 +141,6 @@ class LSTMWithInputCellAttention(nn.Module):
             hidden_seq.append(h_t.unsqueeze(Dim.batch))
 
         hidden_seq = torch.cat(hidden_seq, dim=Dim.batch)
-
         hidden_seq = hidden_seq.squeeze(1)
 
         hidden_seq = hidden_seq.transpose(Dim.batch, Dim.seq).contiguous()
