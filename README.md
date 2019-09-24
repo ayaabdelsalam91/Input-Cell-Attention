@@ -21,19 +21,16 @@ Recent efforts to improve the interpretability of deep neural networks use salie
 ## Usage
 The code is available under scripts folder
 ### Synthetic Data creation:
-Solarized dark             |  Solarized Ocean          |  Solarized Ocean
-:-------------------------:|:-------------------------:-------------------------:
-![](Images/TopBox.png)  |  ![](Images/BottomBox.png)  | ![](Images/MiddleBox.png) 
+Ealier Box                 |  Latter Box               |  Middle                  |  3 Middle Boxes            | 3 Ealier Boxes              
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+![](Images/TopBox.png)     |  ![](Images/BottomBox.png)  | ![](Images/MiddleBox.png) | ![](Images/ThreeMiddleBoxes.png) | ![](Images/ThreeUpperBoxes.png) 
 
-![alt-text-1](Images/TopBox.png) ![alt-text-2](Images/BottomBox.png) ![alt-text-3](Images/MiddleBox.png) 
+
+
 ```python createSimulationData.py```
 
-cd Scripts
-python createSimulationData.py --DataName TopBox           --NumTrainingSamples 1000 --NumTestingSamples 300 --NumTimeSteps 100 --NumFeatures 100 --ImpTimeSteps  30 --ImpFeatures  80 --StartImpTimeSteps 0 --EndImpTimeSteps 30 --StartImpFeatures 10 --EndImpFeatures  90 --multipleBox False
-1. createSimulationData.py --> Creates TopBox,MiddleBox,BottomBox,ThreeUpperBoxes,ThreeMiddleBoxes datasets to choose which dataset to create uncomment it in the code
-2. createMixedSimulationData.py --> Creates MixedBoxes Dataset.
-3. createMovingSimulationData.py --> Creates datasets for moving boxes experiments
-Datasets will be saved in Data folder
+### Training Model:
+```python trainModels.py```
 ## Train Models:
 - Uses trainLSTMModels.py
 - Uncomment the model you would like to train and write the dataset details in the arguments
