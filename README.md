@@ -2,7 +2,7 @@
 Code implementing architecture introduced in "Input-Cell Attention Reduces Vanishing Saliency of Recurrent Neural Networks" by
 Aya Abdelsalam Ismail, Mohamed Gunady, Luiz Pessoa, Hector Corrada Bravo*, Soheil Feizi*.
 
-![alt text](http://url/to/img.png)
+![alt text](Images/cellAttentionLstm.png)
 
 
 ## Creating datasets:
