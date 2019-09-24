@@ -21,6 +21,10 @@ Recent efforts to improve the interpretability of deep neural networks use salie
 ## Usage
 The code is available under scripts folder
 ### Synthetic Data creation:
+Solarized dark             |  Solarized Ocean          |  Solarized Ocean
+:-------------------------:|:-------------------------:-------------------------:
+![](Images/TopBox.png)  |  ![](Images/BottomBox.png)  | ![](Images/MiddleBox.png) 
+
 ![alt-text-1](Images/TopBox.png) ![alt-text-2](Images/BottomBox.png) ![alt-text-3](Images/MiddleBox.png) 
 ```python createSimulationData.py```
 
