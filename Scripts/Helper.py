@@ -76,7 +76,6 @@ def get_immediate_subdirectories(a_dir):
             if os.path.isdir(os.path.join(a_dir, name))]
 
 
-
 def save_intoCSV(data,file,Flip=False,col=None,index=False):
 	if(Flip):
 		print("Will Flip before Saving")
