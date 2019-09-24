@@ -1,4 +1,10 @@
-# Feature-Importance-Experiments
+# Input-Cell Attention
+Code implementing architecture introduced in "Input-Cell Attention Reduces Vanishing Saliency of Recurrent Neural Networks" by
+Aya Abdelsalam Ismail, Mohamed Gunady, Luiz Pessoa, Hector Corrada Bravo*, Soheil Feizi*.
+
+![alt text](http://url/to/img.png)
+
+
 ## Creating datasets:
 1. createSimulationData.py --> Creates TopBox,MiddleBox,BottomBox,ThreeUpperBoxes,ThreeMiddleBoxes datasets to choose which dataset to create uncomment it in the code
 2. createMixedSimulationData.py --> Creates MixedBoxes Dataset.
