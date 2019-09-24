@@ -78,67 +78,67 @@ def main(args):
 
 
 
-    # ########################################### LSTM ##########################################
-    # print("Start Training" , modelName ,'LSTM')
+    ########################################### LSTM ##########################################
+    print("Start Training" , modelName ,'LSTM')
 
 
-    # netUniLstmCellAtten = CustomRNN(args.input_size, args.hidden_size1, args.num_layers, args.num_classes,args.rnndropout,args.LSTMdropout ,networkType="LSTM" ).to(device)
-    # netUniLstmCellAtten.double()
-    # optimizerTimeAtten = torch.optim.Adam(netUniLstmCellAtten.parameters(), lr=args.learning_rate)
+    netUniLstmCellAtten = CustomRNN(args.input_size, args.hidden_size1, args.num_layers, args.num_classes,args.rnndropout,args.LSTMdropout ,networkType="LSTM" ).to(device)
+    netUniLstmCellAtten.double()
+    optimizerTimeAtten = torch.optim.Adam(netUniLstmCellAtten.parameters(), lr=args.learning_rate)
 
 
-    # saveModelName="../Models/"+modelName+"_LSTM_L"+ str(args.num_layers) +"_"+str(args.hidden_size1)+"_Scaled_"+ str(args.learning_rate)+"_DrpRNN"+str(args.rnndropout)+"_DrpLSTM"+str(args.LSTMdropout)+'_'+str(args.num_classes)+"_r"+str(args.attention_hops)+"_da"+str(args.d_a)
-    # saveModelBestName =saveModelName +"_BEST.pkl"
-    # saveModelLastName=saveModelName+"_LAST.pkl"
+    saveModelName="../Models/"+modelName+"_LSTM_L"+ str(args.num_layers) +"_"+str(args.hidden_size1)+"_Scaled_"+ str(args.learning_rate)+"_DrpRNN"+str(args.rnndropout)+"_DrpLSTM"+str(args.LSTMdropout)+'_'+str(args.num_classes)+"_r"+str(args.attention_hops)+"_da"+str(args.d_a)
+    saveModelBestName =saveModelName +"_BEST.pkl"
+    saveModelLastName=saveModelName+"_LAST.pkl"
      
     
 
-    # # Train the model
-    # total_step = len(train_loaderRNN)
-    # Train_acc_flag=False
-    # Train_Acc=0
-    # Test_Acc=0
-    # BestAcc=0
-    # BestEpochs = 0
-    # for epoch in range(args.num_epochs):
-    #     for i, (samples, labels,seqLength) in enumerate(train_loaderRNN):
-    #         netUniLstmCellAtten.train()
-    #         samples = samples.reshape(-1, args.sequence_length, args.input_size).to(device)
-    #         samples = Variable(samples)
-    #         labels = labels.to(device)
-    #         labels = Variable(labels).long()
+    # Train the model
+    total_step = len(train_loaderRNN)
+    Train_acc_flag=False
+    Train_Acc=0
+    Test_Acc=0
+    BestAcc=0
+    BestEpochs = 0
+    for epoch in range(args.num_epochs):
+        for i, (samples, labels,seqLength) in enumerate(train_loaderRNN):
+            netUniLstmCellAtten.train()
+            samples = samples.reshape(-1, args.sequence_length, args.input_size).to(device)
+            samples = Variable(samples)
+            labels = labels.to(device)
+            labels = Variable(labels).long()
 
-    #         outputs = netUniLstmCellAtten(samples,seqLength)
-    #         loss = criterion(outputs, labels)
+            outputs = netUniLstmCellAtten(samples,seqLength)
+            loss = criterion(outputs, labels)
             
-    #         optimizerTimeAtten.zero_grad()
-    #         loss.backward()
-    #         optimizerTimeAtten.step()
+            optimizerTimeAtten.zero_grad()
+            loss.backward()
+            optimizerTimeAtten.step()
 
-    #         if (i+1) % 10 == 0:
-    #             Test_Acc = checkAccuracyOnTestLstm(test_loaderRNN, netUniLstmCellAtten,args)
-    #             Train_Acc = checkAccuracyOnTestLstm(train_loaderRNN, netUniLstmCellAtten,args)
-    #             if(Test_Acc>BestAcc):
-    #                 BestAcc=Test_Acc
-    #                 BestEpochs = epoch+1
-    #                 torch.save(netUniLstmCellAtten, saveModelBestName)
-    #             print ('LSTM for {}-->Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Train Accuracy {:.5f}, Test Accuracy {:.5f},BestEpochs {},BestAcc {:.5f}' 
-    #                    .format(args.DataName, epoch+1, args.num_epochs, i+1, total_step, loss.item(),Train_Acc, Test_Acc,BestEpochs , BestAcc))
+            if (i+1) % 10 == 0:
+                Test_Acc = checkAccuracyOnTestLstm(test_loaderRNN, netUniLstmCellAtten,args)
+                Train_Acc = checkAccuracyOnTestLstm(train_loaderRNN, netUniLstmCellAtten,args)
+                if(Test_Acc>BestAcc):
+                    BestAcc=Test_Acc
+                    BestEpochs = epoch+1
+                    torch.save(netUniLstmCellAtten, saveModelBestName)
+                print ('LSTM for {}-->Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}, Train Accuracy {:.5f}, Test Accuracy {:.5f},BestEpochs {},BestAcc {:.5f}' 
+                       .format(args.DataName, epoch+1, args.num_epochs, i+1, total_step, loss.item(),Train_Acc, Test_Acc,BestEpochs , BestAcc))
 
 
-    #         if(epoch+1)%10==0:
-    #             torch.save(netUniLstmCellAtten, saveModelLastName)
-    #         if(Train_Acc==100):
-    #             torch.save(netUniLstmCellAtten,saveModelLastName)
-    #             Train_acc_flag=True
-    #             break
-    #     if(Train_acc_flag):
-    #         break
+            if(epoch+1)%10==0:
+                torch.save(netUniLstmCellAtten, saveModelLastName)
+            if(Train_Acc==100):
+                torch.save(netUniLstmCellAtten,saveModelLastName)
+                Train_acc_flag=True
+                break
+        if(Train_acc_flag):
+            break
 
-    # print(">>>>>>>>>>>>> 1 layer LSTM  >>>>>>>>>>>>>>>>>>>>>>")
+    print(">>>>>>>>>>>>> 1 layer LSTM  >>>>>>>>>>>>>>>>>>>>>>")
 
-    # Train_Acc =checkAccuracyOnTestLstm(train_loaderRNN , netUniLstmCellAtten, args,Flag=True)
-    # print('BestEpochs {},BestAcc {:.4f}, LastTrainAcc {:.4f},'.format(BestEpochs , BestAcc , Train_Acc))
+    Train_Acc =checkAccuracyOnTestLstm(train_loaderRNN , netUniLstmCellAtten, args,Flag=True)
+    print('BestEpochs {},BestAcc {:.4f}, LastTrainAcc {:.4f},'.format(BestEpochs , BestAcc , Train_Acc))
 
 
 
