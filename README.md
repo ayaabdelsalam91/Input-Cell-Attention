@@ -31,7 +31,7 @@ Earlier Box                 |  Latter Box               |  Middle               
 - Input-cell attention is implemented in ```cell.py```
 - To train different models use ```python trainModels.py```
 
-#### Usage of input-cell attention:
+#### Using input-cell attention:
 - An example of creating a neural networking using input-cell attention is available in ```trainModels.py```.
 - Below is a very simple single layer recurrent network with cell is an LSTM with input-cell attention.
 
