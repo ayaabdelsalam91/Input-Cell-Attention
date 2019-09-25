@@ -38,4 +38,6 @@ LSTM Saliency                 |  Input-Cell Attention
 - To calculate Saliency ```python saliency.py```
 - To plot Saliency ```python plotSaliency.py```
 ### Calculating Accuracy Measure:
+![](Images/accuracyTables.png)
+
 - To calculate accuracy measure used in paper ```python BoxStat.py```
