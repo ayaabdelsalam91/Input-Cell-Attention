@@ -31,3 +31,10 @@ Earlier Box                 |  Latter Box               |  Middle               
 - Input-cell attention is implemented in ```cell.py```
 - To train different models use ```python trainModels.py```
 ### Plotting Saliency:
+LSTM Saliency                 |  Input-Cell Attention  
+:-------------------------:|:-------------------------:
+![](Images/SalLSTM.png)     |  ![](Images/SalCellAtten.png)
+
+- To calculate Saliency ```python saliency.py```
+- To plot Saliency ```python plotSaliency.py```
+
