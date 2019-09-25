@@ -258,9 +258,6 @@ def rescale_(image):
     new= minmax_scale(image)
     return new
 
-    # scaler = StandardScaler()
-    # scaler.fit(image)
-    # return scaler.transform(image)
 
 
 def getIndexOfMaxValues(array,N):
@@ -270,8 +267,6 @@ def getIndexOfMaxValues(array,N):
 
 def getIndexOfImpValues(Type,start=None):
     referenceSample , numberOfImpFeatures= getBoxInfo(Type,start)
-    # plotHeatMapExampleWise(referenceSample,"mixedBox" ,"test",max=1,min=0,greyScale=True)
-    # print(np.sum(referenceSample))
     ind = getIndexOfMaxValues(referenceSample , numberOfImpFeatures)
     return referenceSample , ind ,numberOfImpFeatures
 
@@ -288,39 +283,22 @@ def getJaccardSimilarityScore(Orignal,Salincy):
 
 
 
-def getWeightedJaccardSimilarityScore_(Orignal,Salincy,OrignalIndex,SalincyIndex):
-    # np.sum(np.maximum(Orignal, Salincy))
-    # np.sum(np.minimum(Orignal, Salincy))
-    # numerator denominator  
-    # intersection= np.intersect1d(OrignalIndex,SalincyIndex)
-    # intersectionSum=np.sum(Salincy[intersection])
-    # union = np.union1d(OrignalIndex,SalincyIndex)
-    # unionSum=np.sum(Orignal[union])
-    # unionCount = union.shape[0]
-
+def getWeightedJaccardSimilarityScore(Orignal,Salincy):
 
     return np.sum(np.minimum(Orignal, Salincy))/np.sum(np.maximum(Orignal, Salincy))
 
 
 
-def getWeightedJaccardSimilarityScore(Orignal,Salincy,OrignalIndex,SalincyIndex):
-    intersection= np.intersect1d(OrignalIndex,SalincyIndex)
-    intersectionSum=np.sum(Salincy[intersection])
-    union = np.union1d(OrignalIndex,SalincyIndex)
-    unionSum=np.sum(Orignal[union])
-    unionCount = union.shape[0]
-
-
-    return intersectionSum/unionSum
-
-# def getEnrichmentScore(Orignal,Salincy,OrignalIndex,SalincyIndex,numberOfImpFeatures):
+# def getWeightedJaccardSimilarityScore(Orignal,Salincy,OrignalIndex,SalincyIndex):
 #     intersection= np.intersect1d(OrignalIndex,SalincyIndex)
 #     intersectionSum=np.sum(Salincy[intersection])
-#     missingA = np.setdiff1d(OrignalIndex, SalincyIndex)
-#     missingASum=np.sum(Salincy[missingA])
-#     missingB = np.setdiff1d(SalincyIndex,OrignalIndex) 
-#     missingBSum=np.sum(Salincy[missingB])
-#     return (intersectionSum-missingBSum-missingASum)/numberOfImpFeatures
+#     union = np.union1d(OrignalIndex,SalincyIndex)
+#     unionSum=np.sum(Orignal[union])
+#     unionCount = union.shape[0]
+
+
+#     return intersectionSum/unionSum
+
 
 def getEnrichmentScore(Orignal,Salincy,OrignalIndex,SalincyIndex,numberOfImpFeatures):
     intersection= np.intersect1d(OrignalIndex,SalincyIndex)
