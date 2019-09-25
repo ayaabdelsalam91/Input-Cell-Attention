@@ -30,6 +30,33 @@ Earlier Box                 |  Latter Box               |  Middle               
 ### Train Models:
 - Input-cell attention is implemented in ```cell.py```
 - To train different models use ```python trainModels.py```
+
+#### Usage of input-cell attention:
+An example of creating a neural networking using input-cell attention is available in ```trainModels.py``` below is a very simple single layer recurrent network with cell is an LSTM with input-cell attention.
+
+```
+class CustomRNN(nn.Module):
+    def __init__(self, input_size, hidden_size, num_classes ,d_a,r):
+        super().__init__()
+        self.rnn =LSTMWithInputCellAttention(input_size, hidden_size,r,d_a)
+        self.fc = nn.Linear(hidden_size, num_classes) 
+        
+     def forward(self, x,X_lengths):
+        # Set initial states
+        h0 = torch.zeros(1, x.size(0), self.hidden_size1).to(device) 
+        c0 = torch.zeros(1, x.size(0), self.hidden_size1).to(device)
+        h0 = h0.double()
+        c0 = c0.double()
+        output, _ = self.rnn(x, (h0, c0))
+        idx = (torch.LongTensor(X_lengths) - 1).view(-1, 1).expand(
+            len(X_lengths), output.size(2))
+        idx = idx.unsqueeze(1)
+        output = output.gather(
+                1, Variable(idx)).squeeze(1)
+        output = self.fc(output)
+        output =F.softmax(output, dim=1)
+        return output
+  ```      
 ### Plotting Saliency:
 LSTM Saliency                 |  Input-Cell Attention  
 :-------------------------:|:-------------------------:
