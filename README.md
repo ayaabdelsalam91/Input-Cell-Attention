@@ -21,29 +21,13 @@ Recent efforts to improve the interpretability of deep neural networks use salie
 ## Usage
 The code is available under scripts folder
 ### Synthetic Data creation:
-Solarized dark             |  Solarized Ocean          |  Solarized Ocean
-:-------------------------:|:-------------------------:-------------------------:
-![](Images/TopBox.png)  |  ![](Images/BottomBox.png)  | ![](Images/MiddleBox.png) 
+Earlier Box                 |  Latter Box               |  Middle                  |  3 Middle Boxes            | 3 Earlier Boxes              
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+![](Images/TopBox.png)     |  ![](Images/BottomBox.png)  | ![](Images/MiddleBox.png) | ![](Images/ThreeMiddleBoxes.png) | ![](Images/ThreeUpperBoxes.png) 
 
-![alt-text-1](Images/TopBox.png) ![alt-text-2](Images/BottomBox.png) ![alt-text-3](Images/MiddleBox.png) 
 ```python createSimulationData.py```
 
-cd Scripts
-python createSimulationData.py --DataName TopBox           --NumTrainingSamples 1000 --NumTestingSamples 300 --NumTimeSteps 100 --NumFeatures 100 --ImpTimeSteps  30 --ImpFeatures  80 --StartImpTimeSteps 0 --EndImpTimeSteps 30 --StartImpFeatures 10 --EndImpFeatures  90 --multipleBox False
-1. createSimulationData.py --> Creates TopBox,MiddleBox,BottomBox,ThreeUpperBoxes,ThreeMiddleBoxes datasets to choose which dataset to create uncomment it in the code
-2. createMixedSimulationData.py --> Creates MixedBoxes Dataset.
-3. createMovingSimulationData.py --> Creates datasets for moving boxes experiments
-Datasets will be saved in Data folder
-## Train Models:
-- Uses trainLSTMModels.py
-- Uncomment the model you would like to train and write the dataset details in the arguments
-- Models will be in Models folder
-## Create Saliency:
-- Uses vanillaSaliencyClean.py
-- Uncomment the model you would like to train and write the dataset details in the arguments'
-- Saliencies and gradients will be saved in Results folder
-## Get Statics:
--  To get table used in the paper uses BoxStat.py it reads from Salincy from Results folder. (uncomment the desired models)
--  To get plot for moving boxes:
-    1. Run MovingBoxStat.py
-    2. Run MovingBoxPlot.py
+### Train Models:
+- Input-cell attention is implemented in ```cell.py```
+- To train different models use ```python trainModels.py```
+### Plotting Saliency:
