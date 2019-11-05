@@ -57,7 +57,6 @@ class LSTMWithInputCellAttention(nn.Module):
         self.weight_hh = Parameter(torch.Tensor(hidden_sz, hidden_sz * 4))
         self.bias = Parameter(torch.Tensor(hidden_sz * 4))
         self.r=r
-        self.softmax_=nn.Softmax()
         self.linear_first = torch.nn.Linear(input_sz,d_a)
         self.linear_first.bias.data.fill_(0)
         self.linear_second = torch.nn.Linear(d_a,r)
