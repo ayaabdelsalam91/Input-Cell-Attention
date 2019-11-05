@@ -53,7 +53,6 @@ class LSTMWithInputCellAttention(nn.Module):
         self.r=r
         self.input_sz = input_sz
         self.hidden_size = hidden_sz
-        self.weight_ih = Parameter(torch.Tensor(input_sz, hidden_sz * 4))
         self.weight_iBarh = Parameter(torch.Tensor(input_sz,  hidden_sz* 4))
         self.weight_hh = Parameter(torch.Tensor(hidden_sz, hidden_sz * 4))
         self.bias = Parameter(torch.Tensor(hidden_sz * 4))
