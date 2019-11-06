@@ -1,7 +1,3 @@
-"""
-Created on Thu Oct 26 11:19:58 2017
-@author: Utku Ozbulak - github.com/utkuozbulak
-"""
 import torch
 import Helper
 import argparse
