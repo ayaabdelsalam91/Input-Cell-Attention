@@ -132,10 +132,7 @@ def main(args):
         VS = VanillaSaliency(pretrained_model , ModelType,args)
         grads = np.zeros((TestingRNN.shape))
         saliencies = np.zeros((TestingRNN.shape))
-        Test_Acc=0
-        euclideanScore=0
-        count=0
-        stats[m,0]=ModelType
+
        
         Test_Acc  =   checkAccuracyOnTestLstm(test_loaderRNN , pretrained_model, args,Flag=True)
         print("Test Acc" , ModelType,Test_Acc )
